@@ -9,15 +9,10 @@ public class FastHashtable {
 		public int Key;
 		public long Value;
 		public Node Next;
-		public Node(int p_key,long p_value) {
+		public Node(int p_key, long p_value) {
 			this.Key = p_key;
 			this.Value = p_value;
 			this.Next = null;
-		}
-		public Node(Node p_predecessor, int p_key, long p_value) {
-			this.Key = p_key;
-			this.Value = p_value;
-			this.Next = p_predecessor;
 		}
 	}
 	
@@ -65,8 +60,19 @@ public class FastHashtable {
 			this._buckets[bucket].Head = new Node(p_key,p_value);
 			this._buckets[bucket].Count++;
 		} else {
-			this._buckets[bucket].Head = new Node(this._buckets[bucket].Head,p_key,p_value);
+			Node n = this._buckets[bucket].Head;
+			Node tail = null;
+			while(n!=null) {
+				if(n.Key==p_key) {
+					n.Value = p_value;
+					return;
+				}
+				tail = n;
+				n = tail.Next;
+			}
+			tail.Next = new Node(p_key,p_value);
 			this._buckets[bucket].Count++;
+			
 		}
 	}
 	
@@ -134,6 +140,7 @@ public class FastHashtable {
 			System.out.println(ft.containsKey(i));
 		}
 		for(int i=0;i<(20+1);++i) {
+			System.out.println(ft.containsKey(i));
 			System.out.println(ft.get(i));
 		}
 	}
