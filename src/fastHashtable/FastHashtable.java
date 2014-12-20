@@ -27,7 +27,6 @@ public class FastHashtable {
 
 	private int _N = 10;
 	private float _lf_upper = 0.75f;
-	private float _lf_lower = 0.25f;
 	private Bucket[] _buckets;
 	private int _size = 0;
 
@@ -76,9 +75,8 @@ public class FastHashtable {
 		this._init();
 	}
 
-	public FastHashtable(int p_n, float p_lf_lower, float p_lf_upper) {
+	public FastHashtable(int p_n, float p_lf_upper) {
 		this._N = p_n;
-		this._lf_lower = p_lf_lower;
 		this._lf_upper = p_lf_upper;
 		this._init();
 	}
