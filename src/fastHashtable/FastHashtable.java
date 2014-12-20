@@ -120,6 +120,22 @@ public class FastHashtable {
 		}
 		return false;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append('(');
+		for(int i=0;i<this._N;++i) {
+			for(Node n=this._buckets[i].Head;n!=null;n=n.Next) {
+				sb.append('(');
+				sb.append(n.Key);
+				sb.append(',');
+				sb.append(n.Value);
+				sb.append("),");
+			}
+		}
+		sb.append(')');
+		return sb.toString();
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Hello world");
@@ -130,6 +146,7 @@ public class FastHashtable {
 		for(int i=0;i<20;++i) {
 			ft.add(i, i*2);
 		}
+		System.out.println(ft.toString());
 		for(int i=0;i<(20+1);++i) {
 			System.out.println(ft.containsKey(i));
 		}
@@ -142,7 +159,9 @@ public class FastHashtable {
 		for(int i=0;i<(20+1);++i) {
 			System.out.println(ft.containsKey(i));
 			System.out.println(ft.get(i));
+			ft.delete(i);
 		}
+		System.out.println(ft.toString());
 	}
 
 }
