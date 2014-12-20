@@ -90,6 +90,7 @@ public class FastHashtable {
 			if(n.Key==p_key) {
 				return new Long(n.Value);
 			}
+			n = n.Next;
 		}
 		return null;
 	}
@@ -131,6 +132,9 @@ public class FastHashtable {
 		}
 		for(int i=0;i<(20+1);++i) {
 			System.out.println(ft.containsKey(i));
+		}
+		for(int i=0;i<(20+1);++i) {
+			System.out.println(ft.get(i));
 		}
 	}
 
