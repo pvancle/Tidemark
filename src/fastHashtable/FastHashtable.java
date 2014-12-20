@@ -153,9 +153,6 @@ public class FastHashtable {
 				}
 				this._buckets[bucket].Count--;
 				this._size--;
-				if (this._size / this._N < this._lf_lower) {
-					_decrease_buckets();
-				}
 				return true;
 			}
 			p = n;
