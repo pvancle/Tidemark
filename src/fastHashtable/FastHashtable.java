@@ -32,6 +32,7 @@ public class FastHashtable {
 	private int _size = 0;
 
 	private void _init() {
+		this._size = 0;
 		this._buckets = new Bucket[this._N];
 		for(int i=0;i<this._N;++i) {
 			this._buckets[i] = new Bucket();
