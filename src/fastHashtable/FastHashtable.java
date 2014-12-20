@@ -50,18 +50,6 @@ public class FastHashtable {
 		}
 	}
 
-	private void _decrease_buckets() {
-		int old_N = this._N;
-		Bucket[] old_buckets = this._buckets.clone();
-		this._N = this._N / 2;
-		this._init();
-		for (int i = 0; i < old_N; ++i) {
-			for (Node n = old_buckets[i].Head; n != null; n = n.Next) {
-				this.add(n.Key, n.Value);
-			}
-		}
-	}
-
 	private int _computeBucket(int p_key) {
 		return p_key % this._N;
 	}
