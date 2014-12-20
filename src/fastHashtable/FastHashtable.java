@@ -8,16 +8,16 @@ public class FastHashtable {
 	private class Node {
 		public int Key;
 		public long Value;
-		public Node Node;
+		public Node Next;
 		public Node(int p_key,long p_value) {
 			this.Key = p_key;
 			this.Value = p_value;
-			this.Node = null;
+			this.Next = null;
 		}
 		public Node(Node p_predecessor, int p_key, long p_value) {
 			this.Key = p_key;
 			this.Value = p_value;
-			this.Node = p_predecessor;
+			this.Next = p_predecessor;
 		}
 	}
 	
@@ -34,14 +34,17 @@ public class FastHashtable {
 	private float _lf=0.75f;
 	private Bucket[] _buckets;
 	private void _init() {
-		this._buckets = new Bucket[_N];
+		this._buckets = new Bucket[this._N];
+		for(int i=0;i<this._N;++i) {
+			this._buckets[i] = new Bucket();
+		}
 	}
 	
 	private int _computeBucket(int p_key) {
 		return p_key % this._N;
 	}
 	public FastHashtable() {
-		// TODO Auto-generated constructor stub
+		this._init();
 	}
 	public FastHashtable(int p_n)
 	{
@@ -74,6 +77,7 @@ public class FastHashtable {
 			if(p.Key==p_key) {
 				return true;
 			}
+			p = p.Next;
 			
 		}
 		return false;
@@ -96,11 +100,16 @@ public class FastHashtable {
 		Node n = this._buckets[bucket].Head;
 		while(n!=null) {
 			if(n.Key==p_key) {
-				p.Node = n.Node;
+				if(n!=this._buckets[bucket].Head) {
+					p.Next = n.Next;
+				} else {
+					this._buckets[bucket].Head = this._buckets[bucket].Head.Next;
+				}
+				this._buckets[bucket].Count--;
 				return true;
 			}
 			p = n;
-			n = p.Node;
+			n = p.Next;
 		}
 		return false;
 	}
@@ -109,6 +118,20 @@ public class FastHashtable {
 		System.out.println("Hello world");
 
 		java.util.Hashtable lh = new java.util.Hashtable<>(10,0.75f);
+		
+		FastHashtable ft = new FastHashtable(10);
+		for(int i=0;i<20;++i) {
+			ft.add(i, i*2);
+		}
+		for(int i=0;i<(20+1);++i) {
+			System.out.println(ft.containsKey(i));
+		}
+		for(int i=0;i<(20+1);i+=2) {
+			ft.delete(i);
+		}
+		for(int i=0;i<(20+1);++i) {
+			System.out.println(ft.containsKey(i));
+		}
 	}
 
 }
