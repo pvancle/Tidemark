@@ -85,15 +85,18 @@ public class FHTest {
 	}
 	
 	/*
-	 * 
+	 * Test 
 	 */
 	public class TestForMissingKey extends TestAbstract {
 		public boolean run() {
 			FastHashtable ft = new FastHashtable();
+			boolean r;
+			r = !ft.containsKey(0);
+			assert r;
 			ft.put(0, 1);
-			boolean r0 = !ft.containsKey(1);
-			boolean r1 = ft.containsKey(0);
-			return r0&r1;
+			r = !ft.containsKey(1);
+			assert r;
+			return r;
 		}
 	}
 	
