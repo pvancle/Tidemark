@@ -85,16 +85,27 @@ public class FHTest {
 	}
 	
 	/*
-	 * Test 
+	 * Test where the key does not exist in the container.
 	 */
 	public class TestForMissingKey extends TestAbstract {
 		public boolean run() {
 			FastHashtable ft = new FastHashtable();
 			boolean r;
+			/*
+			 * the container is empty,
+			 */
 			r = !ft.containsKey(0);
 			assert r;
+			/*
+			 * the container has entries but for key equals 1.
+			 */
 			ft.put(0, 1);
 			r = !ft.containsKey(1);
+			assert r;
+			/*
+			 * try to remove a key that does not exist.
+			 */
+			r = !ft.remove(1);
 			assert r;
 			return r;
 		}
@@ -123,6 +134,9 @@ public class FHTest {
 			 * for each type of hash table, put, get, remove many pairs, N, K times. Use wall clock
 			 * time to measure performance.
 			 */
+			/*
+			 * first run the FastHashtable.
+			 */
 			start_time = new Date();
 			for(int j=0;j<K;++j) {
 				for(int i=1;i<N;++i) {
@@ -138,6 +152,9 @@ public class FHTest {
 			stop_time = new Date();
 			ft_total_time += (stop_time.getTime()-start_time.getTime());
 		
+			/*
+			 * now run the java.util.Hashtable.
+			 */
 			start_time = new Date();
 			for(int j=0;j<K;++j) {
 				for(int i=1;i<N;++i) {
@@ -150,6 +167,10 @@ public class FHTest {
 				}
 			}
 			stop_time = new Date();
+			
+			/*
+			 * compare the elapsed times.
+			 */
 			ht_total_time += (stop_time.getTime()-start_time.getTime());
 			return ft_total_time < ht_total_time;
 		}
