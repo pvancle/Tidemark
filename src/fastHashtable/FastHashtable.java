@@ -1,10 +1,15 @@
 package fastHashtable;
 
-import java.lang.System;
-
-
+/*
+ * A hashtable for int keys and long values. This class has enough of the methods of Java's Hashtable
+ * to allow a performance comparison.
+ */
 public class FastHashtable {
 	
+	/*
+	 * The nodes of the singly linked list in
+	 * each bucket.
+	 */
 	private class Node {
 		public int Key;
 		public long Value;
@@ -15,18 +20,38 @@ public class FastHashtable {
 			this.Next = null;
 		}
 	}
-	
+
+	/*
+	 * Each bucket has the head node.
+	 */
 	private class Bucket {
 		public Node Head;
 		public Bucket() {
 			this.Head = null;
 		}
 	}
-
-	private int _N = 10;
-	private float _lf_upper = 0.75f;
+	
+	/*
+	 * The array of buckets.
+	 */
 	private Bucket[] _buckets;
+
+	/*
+	 * The size of the bucket array. The size will grow
+	 * if there are "too many" collisons.
+	 */
+	private int _N = 16;
+	/*
+	 * The number of key/value pairs in the hash table.
+	 */
 	private int _size = 0;
+	
+	/*
+	 * Rehash with a larger value of this._N if
+	 * the ratio of entries to buckets exceeds _load_factor.
+	 */
+	private float _load_factor = 5.0f;
+
 
 	private void _init() {
 		this._size = 0;
@@ -63,7 +88,7 @@ public class FastHashtable {
 
 	public FastHashtable(int p_n, float p_lf_upper) {
 		this._N = p_n;
-		this._lf_upper = p_lf_upper;
+		this._load_factor = p_lf_upper;
 		this._init();
 	}
 
@@ -89,7 +114,7 @@ public class FastHashtable {
 			}
 			tail.Next = new Node(p_key, p_value);
 			this._size++;
-			if ((this._size / (float)this._N) > _lf_upper) {
+			if ((this._size / (float)this._N) > _load_factor) {
 				this._rehash();
 			}
 

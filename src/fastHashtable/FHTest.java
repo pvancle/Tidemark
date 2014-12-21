@@ -1,19 +1,18 @@
 /*
- * This mini test harness has a framework for adding new tests and automatically
- * running each test that is loaded into the test list.
+ * This mini test harness has a framework for adding new unit tests. The main function automatically
+ * runs each test that is loaded into the tests list.
  */
 
 package fastHashtable;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.Hashtable;
 
 public class FHTest {
 
 	/*
-	 * Base class for tests.
+	 * Base class for unit tests.
 	 */
 	private abstract class TestAbstract {
 		public abstract boolean run();
@@ -37,7 +36,8 @@ public class FHTest {
 	public class TestCollision extends TestAbstract {
 		public boolean run() {
 			//...
-			//...initial number of buckets is 2
+			//...initial number of buckets is 2. 4 pairs
+			//...are entered, so, there will be collisions.
 			//...
 			FastHashtable ft = new FastHashtable(2,10);
 			for(int i=0;i<4;++i) {
@@ -52,6 +52,12 @@ public class FHTest {
 		}
 	}
 	
+	/*
+	 * Tests that a rehash is done when the
+	 * ratio of entries to buckets exceeds the
+	 * threshold.
+	 * This test causes 2 rehash's.
+	 */
 	public class TestRehash extends TestAbstract {
 		public boolean run() {
 			/*
@@ -78,20 +84,27 @@ public class FHTest {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public class TestForMissingKey extends TestAbstract {
 		public boolean run() {
 			FastHashtable ft = new FastHashtable();
 			ft.put(0, 1);
-			boolean r = !ft.containsKey(1);
-			return r;
+			boolean r0 = !ft.containsKey(1);
+			boolean r1 = ft.containsKey(0);
+			return r0&r1;
 		}
 	}
 	
+	/*
+	 * Compares the performance time of FastHashtable to java.util.Hashtable.
+	 */
 	public class TestRelativeComputationTime extends TestAbstract {
 		public boolean run() {
 			
-			final int N = 2*1048576;
-			
+			final int N = 1048576;
+			final int K = 8;
 			long s = 0;
 			Date start_time = null;
 			Date stop_time  = null;
@@ -103,8 +116,12 @@ public class FHTest {
 			FastHashtable ft = new FastHashtable(1024,5.0f);
 			Hashtable<Integer,Long> ht = new Hashtable<Integer,Long>(1024,0.75f);
 			
+			/*
+			 * for each type of hash table, put, get, remove many pairs, N, K times. Use wall clock
+			 * time to measure performance.
+			 */
 			start_time = new Date();
-			for(int j=0;j<8;++j) {
+			for(int j=0;j<K;++j) {
 				for(int i=1;i<N;++i) {
 					ft.put(i, i);
 					s += ft.get(i);
@@ -119,7 +136,7 @@ public class FHTest {
 			ft_total_time += (stop_time.getTime()-start_time.getTime());
 		
 			start_time = new Date();
-			for(int j=0;j<8;++j) {
+			for(int j=0;j<K;++j) {
 				for(int i=1;i<N;++i) {
 					Long v = new Long(i);
 					ht.put(i, v);
@@ -138,7 +155,9 @@ public class FHTest {
 	
 
 
-	
+	/*
+	 * Returns the list of unit tests to run. Add new tests here.
+	 */
 	public ArrayList<TestAbstract> getTestsList() {
 		
 		ArrayList<TestAbstract> tests = new ArrayList<TestAbstract>();
@@ -155,6 +174,11 @@ public class FHTest {
 	
 	public static void main(String[] args) {
 
+		/*
+		 * iterate over all of the unit tests and
+		 * count the number of failures, then, report
+		 * the result.
+		 */
 		int failure_count = 0;
 		FHTest test = new FHTest();
 		ArrayList<TestAbstract> tests = test.getTestsList();
