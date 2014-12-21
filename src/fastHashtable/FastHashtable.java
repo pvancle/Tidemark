@@ -18,10 +18,8 @@ public class FastHashtable {
 	
 	private class Bucket {
 		public Node Head;
-		public int  Count;
 		public Bucket() {
 			this.Head = null;
-			this.Count = 0;
 		}
 	}
 
@@ -38,14 +36,14 @@ public class FastHashtable {
 		}
 	}
 
-	private void _increase_buckets() {
+	private void _rehash() {
 		int old_N = this._N;
 		Bucket[] old_buckets = this._buckets.clone();
 		this._N = 2 * this._N;
 		this._init();
 		for (int i = 0; i < old_N; ++i) {
 			for (Node n = old_buckets[i].Head; n != null; n = n.Next) {
-				this.add(n.Key, n.Value);
+				this.put(n.Key, n.Value);
 			}
 		}
 	}
@@ -69,15 +67,14 @@ public class FastHashtable {
 		this._init();
 	}
 
-	public int getSize() {
+	public int size() {
 		return this._size;
 	}
 
-	public void add(int p_key, long p_value) {
+	public void put(int p_key, long p_value) {
 		int bucket = this._computeBucket(p_key);
 		if (this._buckets[bucket].Head == null) {
 			this._buckets[bucket].Head = new Node(p_key, p_value);
-			this._buckets[bucket].Count++;
 			this._size++;
 		} else {
 			Node n = this._buckets[bucket].Head;
@@ -91,10 +88,9 @@ public class FastHashtable {
 				n = tail.Next;
 			}
 			tail.Next = new Node(p_key, p_value);
-			this._buckets[bucket].Count++;
 			this._size++;
-			if (this._size / this._N > _lf_upper) {
-				this._increase_buckets();
+			if ((this._size / (float)this._N) > _lf_upper) {
+				this._rehash();
 			}
 
 		}
@@ -126,7 +122,7 @@ public class FastHashtable {
 		return null;
 	}
 	
-	public boolean delete(int p_key) {
+	public boolean remove(int p_key) {
 		int bucket = this._computeBucket(p_key);
 		Node p = null;
 		Node n = this._buckets[bucket].Head;
@@ -137,7 +133,6 @@ public class FastHashtable {
 				} else {
 					this._buckets[bucket].Head = this._buckets[bucket].Head.Next;
 				}
-				this._buckets[bucket].Count--;
 				this._size--;
 				return true;
 			}
@@ -153,8 +148,6 @@ public class FastHashtable {
 		for (int i = 0; i < this._N; ++i) {
 
 			sb.append(i);
-			sb.append('/');
-			sb.append(this._buckets[i].Count);
 			sb.append(':');
 			for (Node n = this._buckets[i].Head; n != null; n = n.Next) {
 				sb.append('(');
@@ -168,45 +161,5 @@ public class FastHashtable {
 		return sb.toString();
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Hello world");
-
-		java.util.Hashtable lh = new java.util.Hashtable<>(10, 0.75f);
-
-		FastHashtable ft = new FastHashtable(10);
-		for (int i = 0; i < 100; ++i) {
-			for (int k = 0; k < 7; ++k) {
-				ft.add(i, k);
-			}
-		}
-		System.out.println(ft.toString());
-		for (int i = 0; i < (20 + 1); ++i) {
-			System.out.println(ft.containsKey(i));
-		}
-		for (int i = 0; i < (20 + 1); i += 2) {
-			ft.delete(i);
-		}
-		for (int i = 0; i < (20 + 1); ++i) {
-			System.out.println(ft.containsKey(i));
-		}
-		for (int i = 0; i < (20 + 1); ++i) {
-			System.out.println(ft.containsKey(i));
-			System.out.println(ft.get(i));
-			ft.delete(i);
-		}
-		System.out.println(ft.toString());
-		for (int i = 0; i < 20; ++i) {
-			ft.add(i, i * 2);
-		}
-		System.out.println(ft.toString());
-		int v = 10;
-		for (int j = 0; j < 10; ++j) {
-			for (int k = 0; k < 20; ++k) {
-				ft.add(k, v);
-			}
-			v += 10;
-		}
-		System.out.println(ft.toString());
-	}
 
 }
