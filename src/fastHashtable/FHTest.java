@@ -117,7 +117,7 @@ public class FHTest {
 	public class TestRelativeComputationTime extends TestAbstract {
 		public boolean run() {
 			
-			final int N = 1048576;
+			final int N = 1<<16;
 			final int K = 8;
 			long s = 0;
 			Date start_time = null;
@@ -172,6 +172,7 @@ public class FHTest {
 			 * compare the elapsed times.
 			 */
 			ht_total_time += (stop_time.getTime()-start_time.getTime());
+			System.out.println("runtime comparison: ft: "+ft_total_time+"ms, ht: "+ht_total_time+"ms, ft/ht: "+(ft_total_time/ht_total_time));
 			return ft_total_time < ht_total_time;
 		}
 		
