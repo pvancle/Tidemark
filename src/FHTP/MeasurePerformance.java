@@ -1,3 +1,6 @@
+/*
+ * Measure runtime of FastHashtable versus java.util.Hashtable.
+ */
 package FHTP;
 
 import java.util.Date;
@@ -7,13 +10,14 @@ import fastHashtable.FastHashtable;
 
 public class MeasurePerformance {
 
-	public MeasurePerformance() {
-		// TODO Auto-generated constructor stub
-	}
-
+	/*
+	 * for a FastHashtable and a Hashtable, repeatedly create a large object, access its
+	 * entries, and, remove them.
+	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+
+
+		final int INITIAL_CAPACITY = 1024;
 		final int N = 1<<16;
 		final int K = 8;
 		long s = 0;
@@ -24,8 +28,8 @@ public class MeasurePerformance {
 		//...
 		//...initialize both FastHashtable & Hashtable
 		//...
-		FastHashtable ft = new FastHashtable(1024,5.0f);
-		Hashtable<Integer,Long> ht = new Hashtable<Integer,Long>(1024,0.75f);
+		FastHashtable ft = new FastHashtable(INITIAL_CAPACITY,5.0f);
+		Hashtable<Integer,Long> ht = new Hashtable<Integer,Long>(INITIAL_CAPACITY,0.75f);
 		
 		/*
 		 * for each type of hash table, put, get, remove many pairs, N, K times. Use wall clock
