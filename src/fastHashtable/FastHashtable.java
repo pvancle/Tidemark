@@ -73,10 +73,6 @@ public class FastHashtable {
 		}
 	}
 
-	private int _computeBucket(int p_key) {
-		return p_key % this._N;
-	}
-
 	public FastHashtable() {
 		this._init();
 	}
@@ -97,7 +93,7 @@ public class FastHashtable {
 	}
 
 	public void put(int p_key, long p_value) {
-		int bucket = this._computeBucket(p_key);
+		int bucket = p_key % this._N;
 		if (this._buckets[bucket].Head == null) {
 			this._buckets[bucket].Head = new Node(p_key, p_value);
 			this._size++;
@@ -122,7 +118,7 @@ public class FastHashtable {
 	}
 
 	public boolean containsKey(int p_key) {
-		int bucket = this._computeBucket(p_key);
+		int bucket = p_key % this._N;
 
 		Node p = this._buckets[bucket].Head;
 		while (p != null) {
@@ -136,7 +132,7 @@ public class FastHashtable {
 	}
 	
 	public Long get(int p_key) {
-		int bucket = this._computeBucket(p_key);
+		int bucket = p_key % this._N;
 		Node n = this._buckets[bucket].Head;
 		while(n!=null) {
 			if(n.Key==p_key) {
@@ -148,7 +144,7 @@ public class FastHashtable {
 	}
 	
 	public boolean remove(int p_key) {
-		int bucket = this._computeBucket(p_key);
+		int bucket = p_key % this._N;
 		Node p = null;
 		Node n = this._buckets[bucket].Head;
 		while(n!=null) {
