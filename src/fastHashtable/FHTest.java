@@ -220,7 +220,7 @@ public class FHTest {
 
 			}
 		}
-		System.out.println("failure count: "+failure_count);
+		System.out.println("failure count: "+failure_count+" of "+tests.size()+" unit tests");
 
 	}
 
